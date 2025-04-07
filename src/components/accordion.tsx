@@ -1,21 +1,22 @@
-import clsx from "clsx";
 
 
 export default function Accordion() {
-    var steps = 3;
+    const steps = 3;
+
     return (
-        <div className="flex-center flex-row w-full h-max">
+        <div className="w-full flex items-center justify-between px-4 relative">
+            {/* Line connecting circles */}
+            <div className="absolute top-1/2 left-[35px] right-[35px] h-[1px] bg-blue-700 z-0" />
+
+            {/* Steps */}
             {Array.from({ length: steps }, (_, index) => (
-                <div key={index} className="flex-center flex-row w-max ">
-                    <div className="flex-center h-[35px] aspect-square border-blue-700 border rounded-full relative">
-                        <span className="absolute text-lg">{index + 1}</span>
-                    </div>
-                    {/* Render the line only if it's not the last step */}
-                    {index !== steps - 1 && (
-                        <span className="h-[1px] w-full bg-blue-700"></span>
-                    )}
+                <div
+                    key={index}
+                    className="z-10 flex items-center justify-center aspect-square w-[50px] m-[7px] border border-blue-700 rounded-full bg-white"
+                >
+                    <span className="text-lg">{index + 1}</span>
                 </div>
             ))}
         </div>
-    );    
+    );
 }

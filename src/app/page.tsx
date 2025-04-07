@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import Accordion from "@/components/accordion";
 import * as Steps from "@/components/formPages";
+import Buttons from "@/components/Buttons";
 
 const stepArray = Object.values(Steps);
 const stepLength = stepArray.length;
@@ -32,6 +33,7 @@ export default function Home() {
       <section>
         <form className="bg-gray-60 shadow-md p-4 rounded-3xl bg-gray-50 min-w-3xs min-h-[25vh]">
           <CurrentStep />
+          <Buttons step={step} nextStep={nextStep} prevStep={prevStep} />
         </form>
       </section>
     </div> 

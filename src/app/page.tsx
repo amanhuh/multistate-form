@@ -1,10 +1,19 @@
 import Image from "next/image";
+import Accordion from "@/components/accordion";
 
 export default function Home() {
   return (
-    <form className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold mb-4 text-black aspec">AA</h1>
-      
-    </form>
+    <>
+    <div className="flex-center flex-col [&>*]:w-full">
+      <section>
+        <Accordion></Accordion>
+      </section>
+      <section>
+        <form className="border border-black rounded-4xl bg-gray-50 min-w-3xs min-h-[25vh]">
+        </form>
+      </section>
+    </div>
+    </>
+    
   );
 }

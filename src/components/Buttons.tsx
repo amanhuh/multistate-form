@@ -1,75 +1,86 @@
-
 export default function Buttons({
     step,
+    maxStep,
     nextStep,
     prevStep,
   }: {
     step: number;
+    maxStep: number;
     nextStep: () => void;
     prevStep: () => void;
   }) {
     return (
-        <div className="w-full mt-6 flex flex-wrap gap-4">
-        {/* Step 0: Only Continue */}
+      <div className="w-full mt-6 flex flex-wrap gap-4">
+        {/* First Step: Only Continue */}
         {step === 0 && (
-            <button
+          <button
             type="button"
             onClick={nextStep}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-xl"
-            >
+          >
             Continue
-            </button>
+          </button>
         )}
 
-        {/* Step 1: Back + Continue */}
-        {step === 1 && (
-            <>
+        {/* Middle Steps: Back + Continue */}
+        {step > 0 && step < maxStep - 1 && (
+          <div className="w-full h-max flex flex-row gap-4">
             <button
-                type="button"
-                onClick={prevStep}
-                className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl"
+              type="button"
+              onClick={prevStep}
+              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl"
             >
-                Back
+              Back
             </button>
             <button
-                type="button"
-                onClick={nextStep}
-                className="w-1/2 bg-blue-600 text-white py-2 px-4 rounded-xl"
+              type="button"
+              onClick={nextStep}
+              className="w-1/2 bg-blue-600 text-white py-2 px-4 rounded-xl"
             >
-                Continue
+              Continue
             </button>
-            </>
+          </div>
         )}
-
-        {/* Step 2: Back + Review & Submit */}
-        {step === 2 && (
-            <>
+  
+        {/* Second Last Step: Back + Review & Submit */}
+        {step === maxStep - 1 && step !== 0 && (
+          <div className="w-full h-max flex flex-row gap-4">
             <button
-                type="button"
-                onClick={prevStep}
-                className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl"
+              type="button"
+              onClick={prevStep}
+              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl"
             >
-                Back
+              Back
             </button>
             <button
-                type="button"
-                onClick={nextStep}
-                className="w-1/2 bg-green-600 text-white py-2 px-4 rounded-xl"
+              type="button"
+              onClick={nextStep}
+              className="w-1/2 bg-green-600 text-white py-2 px-4 rounded-xl"
             >
-                Review & Submit
+              Review & Submit
             </button>
-            </>
+          </div>
         )}
-
-        {/* Step 3 (Review Step): Only Submit */}
-        {step === 3 && (
+  
+        {/* Last Step: Submit only */}
+        {step === maxStep && (
+          <div className="w-full h-max flex flex-row gap-4">
             <button
-            type="submit"
-            className="w-full bg-green-600 text-white py-2 px-4 rounded-xl"
+              type="button"
+              onClick={prevStep}
+              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl"
             >
-            Submit
+              Back
             </button>
+            <button
+              type="submit"
+              className="w-1/2 bg-green-700 text-white py-2 px-4 rounded-xl"
+            >
+              Submit
+            </button>
+          </div>
         )}
-        </div>
-    )
-}
+      </div>
+    );
+  }
+  

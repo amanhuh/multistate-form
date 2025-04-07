@@ -34,7 +34,7 @@ export default function Home() {
       <section>
         <form className="bg-gray-60 shadow-md p-4 rounded-3xl bg-gray-50 min-w-3xs min-h-[25vh]">
           <CurrentStep />
-          <Buttons step={step} nextStep={nextStep} prevStep={prevStep} />
+          <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
         </form>
       </section>
     </div> 

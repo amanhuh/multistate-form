@@ -5,12 +5,12 @@ import { useState } from "react";
 
 export default function One() {
   const handleChange = () => {
-
+    
   }
 
   return (
     <div className="">
-      <p className="text-2xl font-bold mb-5">Personal Information</p>
+      <p className="text-2xl font-bold mb-5">Personal Details</p>
       <div className="flex flex-col md:flex-row gap-4">
       <div className="flex flex-col">
         <label htmlFor="fname" className="text-sm font-semibold mb-2">First Name</label>

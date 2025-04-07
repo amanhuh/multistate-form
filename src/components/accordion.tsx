@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 
-export default function Accordion() {
+export default function Accordion(props: { step?: string }) {
     var steps = 3;
     return (
         <div className="flex-center flex-row w-full h-max">

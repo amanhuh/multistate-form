@@ -7,7 +7,7 @@ import StepTwo from "@/components/formPages/stepTwo";
 import StepThree from "@/components/formPages/stepThree";
 
 export default function Home() {
-  const [step, setStep] = React.useState(1);
+  const [step, setStep] = React.useState<number>(1);
   const [formData, setFormData] = React.useState({});
   const [formErrors, setFormErrors] = React.useState([{}]);
 
@@ -38,10 +38,11 @@ export default function Home() {
         <div className="flex-center mb-[25px] text-3xl font-bold">
           <h1>Student Details</h1>
         </div>
-        <Accordion></Accordion>
+        <Accordion stepNo={step}></Accordion>
       </section>
       <section>
-        <form className="bg-gray-60 rounded-[30px] shadow-md p-4 rounded-3xl bg-gray-50 min-w-3xs min-h-[25vh]">
+        <form className="bg-gray-60 rounded-[30px] shadow-md p-4 rounded-3xl bg-gray-100 min-w-3xs min-h-[25vh]">
+
         </form>
       </section>
     </div> 

@@ -1,5 +1,5 @@
 
-export default function Accordion(props: { step?: string }) {
+export default function Accordion(props: { stepNo?: number }) {
     var steps = 3;
     return (
         <div className="w-full flex items-center justify-between px-4 relative">

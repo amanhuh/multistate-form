@@ -2,9 +2,12 @@
 import Image from "next/image";
 import React from "react";
 import Accordion from "@/components/accordion";
-import StepOne from "@/components/formPages/stepOne";
-import StepTwo from "@/components/formPages/stepTwo";
-import StepThree from "@/components/formPages/stepThree";
+import * as Steps from "@/components/formPages";
+
+const stepArray = Object.values(Steps);
+const stepLength = stepArray.length;
+console.log(stepArray)
+console.log(stepLength)
 
 export default function Home() {
   const [step, setStep] = React.useState<number>(1);
@@ -19,19 +22,6 @@ export default function Home() {
     setStep((step) => step - 1);
   }
 
-  const renderStep = () => {
-    switch (step) {
-      case 1:
-        return <StepOne />;
-      case 2:
-        return <StepTwo />;
-      case 3:
-        return <StepThree />;
-      default:
-        return <StepOne />;
-    }
-  }
-
   return (
     <div className="flex-center flex-col [&>*]:w-full">
       <section className="py-[30px]">
@@ -41,8 +31,9 @@ export default function Home() {
         <Accordion stepNo={step}></Accordion>
       </section>
       <section>
-        <form className="bg-gray-60 rounded-[30px] shadow-md p-4 rounded-3xl bg-gray-100 min-w-3xs min-h-[25vh]">
+        <form className="bg-gray-60 shadow-md p-4 rounded-3xl bg-gray-100 min-w-3xs min-h-[25vh]">
 
+          {/* {renderStep()} */}
         </form>
       </section>
     </div> 

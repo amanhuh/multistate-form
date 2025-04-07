@@ -1,11 +1,19 @@
 import Image from "next/image";
-import Accordion from "@/ui/accordion";
+import Accordion from "@/components/accordion";
 
 export default function Home() {
   return (
-    <form className="border border-black rounded-4xl bg-gray-50 min-w-3xs min-h-[25vh]">
-      <Accordion>
-      </Accordion>
-    </form>
+    <>
+    <div className="flex-center flex-col [&>*]:w-full">
+      <section>
+        <Accordion></Accordion>
+      </section>
+      <section>
+        <form className="border border-black rounded-4xl bg-gray-50 min-w-3xs min-h-[25vh]">
+        </form>
+      </section>
+    </div>
+    </>
+    
   );
 }

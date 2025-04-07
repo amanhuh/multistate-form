@@ -14,20 +14,20 @@ export default function One() {
       <div className="flex flex-col md:flex-row gap-4">
       <div className="flex flex-col">
         <label htmlFor="fname" className="text-sm font-semibold mb-2">First Name</label>
-        <input name="fname" className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5"  onChange={handleChange}></input>
+        <input name="fname" className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5" placeholder="First Name" onChange={handleChange}></input>
       </div>
       <div className="flex flex-col">
         <label htmlFor="lname" className="text-sm font-semibold mb-2">Last Name</label>
-        <input name="lname" className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5" onChange={handleChange}></input>
+        <input name="lname" className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5" placeholder="Last Name" onChange={handleChange}></input>
       </div>
       </div>
       <div className="flex flex-col mt-4">
         <label htmlFor="email" className="text-sm font-semibold mb-2">Email</label>
-        <input name="email" className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5" onChange={handleChange}></input>
+        <input name="email" className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5" placeholder="Eg: email@gmail.com" onChange={handleChange}></input>
       </div>
       <div className="flex flex-col mt-4">
         <label htmlFor="phone" className="text-sm font-semibold mb-2">Phone</label>
-        <input name="phone" className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5" onChange={handleChange}></input>
+        <input name="phone" className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5" placeholder="+91" onChange={handleChange}></input>
       </div>
     </div>
   );

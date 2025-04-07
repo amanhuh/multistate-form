@@ -1,5 +1,8 @@
 export default function Two() {
-  const handleChange = () => {};
+
+  const handleChange = () => {
+    
+  };
 
   return (
     <div className="">
@@ -8,7 +11,8 @@ export default function Two() {
         <label htmlFor="clgName" className="text-sm font-semibold mb-2">College Name</label>
         <input
           name="clgName"
-          className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5"
+          className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5"
+          placeholder="Enter your college name"
           onChange={handleChange}
         ></input>
       </div>
@@ -18,7 +22,8 @@ export default function Two() {
         </label>
         <input
           name="course"
-          className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5"
+          className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5"
+          placeholder="Enter your course name"
           onChange={handleChange}
         ></input>
       </div>
@@ -27,13 +32,13 @@ export default function Two() {
           <label htmlFor="class" className="text-sm font-semibold mb-2">
             Class
           </label>
-          <input name="class" className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5" onChange={handleChange}></input>
+          <input name="class" className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5" placeholder="eg: SYIT" onChange={handleChange}></input>
         </div>
         <div className="flex flex-col">
           <label htmlFor="div" className="text-sm font-semibold mb-2">
             Div
           </label>
-          <input name="div" className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5" onChange={handleChange}></input>
+          <input name="div" className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5" placeholder="eg: A" onChange={handleChange}></input>
         </div>
       </div>
       <div className="flex flex-col mt-4">
@@ -42,7 +47,8 @@ export default function Two() {
         </label>
         <input
           name="rollNo"
-          className="border-2 border-gray-300 focus-visible:border-blue-700! rounded-lg px-3 py-1.5"
+          className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5"
+          placeholder="Enter your roll number"
           onChange={handleChange}
         ></input>
       </div>

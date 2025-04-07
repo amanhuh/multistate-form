@@ -10,7 +10,7 @@ const stepArray = Object.values(Steps);
 const stepLength = stepArray.length;
 
 export default function Home() {
-  const [step, setStep] = React.useState(0); // 0-based index
+  const [step, setStep] = React.useState<number>(0);
   const CurrentStep = stepArray[step];
   const [formData, setFormData] = React.useState({});
   const [formErrors, setFormErrors] = React.useState([{}]);
@@ -24,7 +24,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex-center flex-col [&>*]:w-full">
+    <div className="flex-center flex-col [&>*]:w-full mt-15">
       <section className="py-[30px]">
         <div className="flex-center mb-[25px] text-3xl font-bold">
           <h1>Student Details</h1>
@@ -32,7 +32,7 @@ export default function Home() {
         <Accordion stepNo={step}></Accordion>
       </section>
       <section>
-        <form className="bg-gray-60 shadow-md p-4 rounded-3xl bg-gray-50 min-w-3xs min-h-[25vh]">
+        <form className="bg-gray-60 shadow-lg p-4 rounded-3xl bg-white min-w-3xs min-h-[25vh]">
           <CurrentStep />
           <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
         </form>

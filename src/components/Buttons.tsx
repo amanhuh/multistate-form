@@ -16,7 +16,7 @@ export default function Buttons({
           <button
             type="button"
             onClick={nextStep}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-xl"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
           >
             Continue
           </button>
@@ -28,14 +28,14 @@ export default function Buttons({
             <button
               type="button"
               onClick={prevStep}
-              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl"
+              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
             >
               Back
             </button>
             <button
               type="button"
               onClick={nextStep}
-              className="w-1/2 bg-blue-600 text-white py-2 px-4 rounded-xl"
+              className="w-1/2 bg-blue-600 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
             >
               Continue
             </button>
@@ -48,14 +48,14 @@ export default function Buttons({
             <button
               type="button"
               onClick={prevStep}
-              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl"
+              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
             >
               Back
             </button>
             <button
               type="button"
               onClick={nextStep}
-              className="w-1/2 bg-green-600 text-white py-2 px-4 rounded-xl"
+              className="w-1/2 bg-green-600 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
             >
               Review & Submit
             </button>
@@ -68,13 +68,13 @@ export default function Buttons({
             <button
               type="button"
               onClick={prevStep}
-              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl"
+              className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
             >
               Back
             </button>
             <button
               type="submit"
-              className="w-1/2 bg-green-700 text-white py-2 px-4 rounded-xl"
+              className="w-1/2 bg-green-700 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
             >
               Submit
             </button>

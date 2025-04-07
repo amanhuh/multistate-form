@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.flex-center {
+  @apply: justify-center items-center;
+}
+
+.nig {
+  @apply: text-black bg-black;
+}

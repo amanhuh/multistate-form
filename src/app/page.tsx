@@ -6,8 +6,6 @@ import * as Steps from "@/components/formPages";
 
 const stepArray = Object.values(Steps);
 const stepLength = stepArray.length;
-console.log(stepArray)
-console.log(stepLength)
 
 export default function Home() {
   const [step, setStep] = React.useState<number>(1);
@@ -21,6 +19,8 @@ export default function Home() {
   const prevStep = () => { 
     setStep((step) => step - 1);
   }
+
+
 
   return (
     <div className="flex-center flex-col [&>*]:w-full">

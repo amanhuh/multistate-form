@@ -6,7 +6,7 @@ import { FormData } from "@/app/page";
 interface Props {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-  formErrors: Partial<FormData>;
+  formErrors: Partial<Record<keyof FormData, string>>;
 }
 
 export default function Two({ formData, setFormData, formErrors }: Props) {
@@ -16,7 +16,7 @@ export default function Two({ formData, setFormData, formErrors }: Props) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <p className="text-2xl font-bold mb-5">Education Details</p>
 
       <div className="flex flex-col">
@@ -26,7 +26,7 @@ export default function Two({ formData, setFormData, formErrors }: Props) {
         <input
           name="clgName"
           className={`border-2 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700 focus-visible:outline-blue-700 rounded-lg px-3 py-1.5 ${
-            formErrors.clgName ? "border-red-500" : ""
+            formErrors.clgName ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Enter your college name"
           value={formData.clgName}
@@ -44,7 +44,7 @@ export default function Two({ formData, setFormData, formErrors }: Props) {
         <input
           name="course"
           className={`border-2 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700 focus-visible:outline-blue-700 rounded-lg px-3 py-1.5 ${
-            formErrors.course ? "border-red-500" : ""
+            formErrors.course ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Enter your course name"
           value={formData.course}
@@ -56,14 +56,14 @@ export default function Two({ formData, setFormData, formErrors }: Props) {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 mt-4">
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <label htmlFor="class" className="text-sm font-semibold mb-2">
             Class
           </label>
           <input
             name="class"
             className={`border-2 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700 focus-visible:outline-blue-700 rounded-lg px-3 py-1.5 ${
-              formErrors.class ? "border-red-500" : ""
+              formErrors.class ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="eg: SYIT"
             value={formData.class}
@@ -74,14 +74,14 @@ export default function Two({ formData, setFormData, formErrors }: Props) {
           )}
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <label htmlFor="div" className="text-sm font-semibold mb-2">
             Div
           </label>
           <input
             name="div"
             className={`border-2 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700 focus-visible:outline-blue-700 rounded-lg px-3 py-1.5 ${
-              formErrors.div ? "border-red-500" : ""
+              formErrors.div ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="eg: A"
             value={formData.div}
@@ -100,7 +100,7 @@ export default function Two({ formData, setFormData, formErrors }: Props) {
         <input
           name="rollNo"
           className={`border-2 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700 focus-visible:outline-blue-700 rounded-lg px-3 py-1.5 ${
-            formErrors.rollNo ? "border-red-500" : ""
+            formErrors.rollNo ? "border-red-500" : "border-gray-300"
           }`}
           placeholder="Enter your roll number"
           value={formData.rollNo}

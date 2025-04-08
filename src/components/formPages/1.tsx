@@ -6,7 +6,7 @@ import { FormData } from "@/app/page";
 interface Props {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-  formErrors: Partial<FormData>;
+  formErrors: Partial<Record<keyof FormData, string>>;
 }
 
 export default function One({ formData, setFormData, formErrors }: Props) {
@@ -16,11 +16,11 @@ export default function One({ formData, setFormData, formErrors }: Props) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <p className="text-2xl font-bold mb-5">Personal Details</p>
 
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <label htmlFor="firstname" className="text-sm font-semibold mb-2">
             First Name
           </label>
@@ -38,7 +38,7 @@ export default function One({ formData, setFormData, formErrors }: Props) {
           )}
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <label htmlFor="lastname" className="text-sm font-semibold mb-2">
             Last Name
           </label>

@@ -2,7 +2,6 @@
 
 import React from "react";
 import { FormData } from "@/app/page";
-import { form } from "motion/react-client";
 
 interface Props {
   formData: FormData;

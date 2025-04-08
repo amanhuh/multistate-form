@@ -75,14 +75,12 @@ export default function Home() {
   };
 
   const nextStep = () => {
-    const errors = validateStep(step); // custom validation function
+    const errors = validateStep(step);
     setFormErrors(errors);
   
     if (Object.keys(errors).length === 0) {
-      // No validation errors, proceed to next step
       setStep((prev) => Math.min(prev + 1, stepLength - 1));
     } else {
-      // Stay on the current step and show errors
       console.log("Validation failed:", errors);
     }
   };

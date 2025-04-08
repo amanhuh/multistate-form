@@ -1,5 +1,11 @@
+import { FormData } from "@/app/page";
 
-export default function Three() {
+interface Props {
+  formData: FormData;
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+}
+
+export default function Three({ formData, setFormData }: Props) {
 
   return (
     <div className="">

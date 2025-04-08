@@ -9,12 +9,19 @@ export default function Buttons({
 }: {
   step: number;
   maxStep: number;
-  nextStep: () => void;
+  nextStep: () => boolean | void;
   prevStep: () => void;
-  handleSubmit: () => void;
+  handleSubmit: (e?: React.FormEvent, step?: number, submit?: boolean) => void;
 }) {
   const nextButtonRef = useRef<HTMLButtonElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
+
+  const handleContinue = (submit: boolean = false) => {
+    const advanced = nextStep(); // returns true if moved to next step
+    if (advanced !== false) {
+      handleSubmit(undefined, step, submit);
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -34,11 +41,11 @@ export default function Buttons({
 
   return (
     <div className="w-full mt-6 flex flex-wrap gap-4">
-      {/* First Step: Only Continue */}
+      {/* First Step */}
       {step === 0 && (
         <button
           type="button"
-          onClick={nextStep}
+          onClick={() => handleContinue(false)}
           ref={nextButtonRef}
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
         >
@@ -46,7 +53,7 @@ export default function Buttons({
         </button>
       )}
 
-      {/* Middle Steps: Back + Continue */}
+      {/* Middle Steps */}
       {step > 0 && step < maxStep - 1 && (
         <div className="w-full h-max flex flex-row gap-4">
           <button
@@ -58,7 +65,7 @@ export default function Buttons({
           </button>
           <button
             type="button"
-            onClick={nextStep}
+            onClick={() => handleContinue(false)}
             ref={nextButtonRef}
             className="w-1/2 bg-blue-600 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
           >
@@ -67,8 +74,8 @@ export default function Buttons({
         </div>
       )}
 
-      {/* Second Last Step: Back + Review & Submit */}
-      {step === maxStep - 1 && step !== 0 && (
+      {/* Review & Submit */}
+      {step === maxStep - 1 && (
         <div className="w-full h-max flex flex-row gap-4">
           <button
             type="button"
@@ -79,7 +86,7 @@ export default function Buttons({
           </button>
           <button
             type="button"
-            onClick={nextStep}
+            onClick={() => handleContinue(false)}
             ref={nextButtonRef}
             className="w-1/2 bg-green-600 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
           >
@@ -88,7 +95,7 @@ export default function Buttons({
         </div>
       )}
 
-      {/* Last Step: Submit only */}
+      {/* Final Submit */}
       {step === maxStep && (
         <div className="w-full h-max flex flex-row gap-4">
           <button
@@ -101,7 +108,7 @@ export default function Buttons({
           <button
             type="submit"
             ref={submitButtonRef}
-            onClick={handleSubmit}
+            onClick={(e) => handleSubmit(e, step, true)}
             className="w-1/2 bg-green-700 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
           >
             Submit

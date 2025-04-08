@@ -5,12 +5,12 @@ const SubmissionSchema = new Schema({
   lastname: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
-  clgName: { type: String, required: true },
-  course: { type: String, required: true },
-  class: { type: String, required: true },
-  div: { type: String, required: true },
-  rollNo: { type: String, required: true },
-  image: { type: String, required: true },
+  clgName: { type: String },
+  course: { type: String },
+  class: { type: String },
+  div: { type: String },
+  rollNo: { type: String },
+  image: { type: String },
 }, { timestamps: true });
 
 const Submission = models.Submission || model("Submission", SubmissionSchema);

@@ -5,6 +5,7 @@ import React from "react";
 import Accordion from "@/components/accordion";
 import * as Steps from "@/components/formPages";
 import Buttons from "@/components/Buttons";
+import { tr } from "motion/react-client";
 
 const stepArray = Object.values(Steps);
 const stepLength = stepArray.length;
@@ -21,6 +22,8 @@ export interface FormData {
   rollNo: string;
   
   image?: File;
+  step: number;
+  isSubmitted: boolean;
 }
 
 export default function Home() {
@@ -37,41 +40,44 @@ export default function Home() {
     div: '',
     rollNo: '',
     image: undefined,
+    step: 0,
+    isSubmitted: false
   };
 
   const [formData, setFormData] = React.useState<FormData>(defaultFormData);
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem("formData");
-      if (saved) {
-        setFormData(JSON.parse(saved));
-      }
-    }
-  }, []);
-
   const [step, setStep] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem("step");
-      if (saved) {
-        setStep(parseInt(saved));
-      }
-    }
-  }, []);
-
   const [formErrors, setFormErrors] = React.useState<ErrorState>({});
-
   const CurrentStep = stepArray[step];
 
   React.useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(formData));
-  }, [formData]);
-
-  React.useEffect(() => {
-    localStorage.setItem("step", step.toString());
-  }, [step]);
+    const loadSavedDetails = async () => {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem("details");
+        if (!saved) return;
+  
+        try {
+          const { email, _id } = JSON.parse(saved);
+  
+          const res = await fetch(`/api/submit/${_id}`);
+          const result = await res.json();
+  
+          if (res.ok && result.data && result.data.email === email) {
+            // Set form data and current step
+            setFormData(result.data);
+            if (result.data.step) {
+              setStep(Number(result.data.step));
+            }
+          } else {
+            console.warn("No valid saved data found");
+          }
+        } catch (err) {
+          console.error("Failed to load saved submission", err);
+        }
+      }
+    };
+  
+    loadSavedDetails();
+  }, []);
 
   const validateStep = (step: number): Partial<Record<keyof FormData, string>> => {
     const errors: ErrorState = {};
@@ -106,8 +112,10 @@ export default function Home() {
   
     if (Object.keys(errors).length === 0) {
       setStep((prev) => Math.min(prev + 1, stepLength - 1));
+      return true
     } else {
       console.log("Validation failed:", errors);
+      return false
     }
   };
 
@@ -115,29 +123,39 @@ export default function Home() {
     setStep((prev) => Math.max(prev - 1, 0));
   };
 
-  const handleSubmit = async (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent, step?: number, submit?: boolean) => {
     e?.preventDefault();
     try {
       const form = new FormData();
       for (const key in formData) {
         form.append(key, formData[key as keyof typeof formData] as any);
       }
+      if (step !== undefined) form.append('step', step.toString())
+      if (submit) form.append('isSubmitted', 'true');
   
-      const res = await fetch('/api/submit', {
-        method: 'POST',
-        body: form,
-      });
+      if (typeof window !== 'undefined') {
+        const data = localStorage.getItem('details');
+        let savedDetails = data ? JSON.parse(data) : null;
   
-      console.log("Status:", res.status); // ✅ Add this
-  
-      const result = await res.json(); // 🔥 This might throw if the body is empty or invalid JSON
-      console.log("Result:", result);
-  
-      if (!res.ok || !result.success) {
-        throw new Error("Submission failed");
+        if (!savedDetails || savedDetails.email !== formData.email) {
+          const res = await fetch('/api/submit', {
+            method: 'POST',
+            body: form,
+          });
+          const result = await res.json();
+          localStorage.setItem(
+            'details',
+            JSON.stringify({ email: formData.email, _id: result.data._id })
+          );
+        } else {
+          const res = await fetch(`/api/submit/${savedDetails._id}`, {
+            method: 'PATCH',
+            body: form,
+          });
+          const result = await res.json();
+        }
+        submit && localStorage.removeItem('details')
       }
-  
-      // Success handling here...
     } catch (err) {
       console.error("Submit error", err);
       alert("Something went wrong.");

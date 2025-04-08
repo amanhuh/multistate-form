@@ -12,6 +12,8 @@
     "@tabler/icons-react": "^3.31.0",
     "cloudinary": "^2.6.0",
     "clsx": "^2.1.1",
+    "formidable": "^3.5.2",
+    "mongoose": "^8.13.2",
     "motion": "^12.6.3",
     "next": "15.2.4",
     "react": "^19.0.0",

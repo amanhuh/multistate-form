@@ -51,7 +51,8 @@ export default function Three({ formData, setFormData, formErrors }: Props) {
   };
 
   const handleRemoveImage = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent the default button behavior
+    e.preventDefault();
+
     setFormData((prev) => ({ ...prev, image: undefined }));
   };
 

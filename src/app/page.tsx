@@ -87,7 +87,14 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    console.log("Submitting form data:", formData);
+    //setFormData((prev) => ({ ...prev, image: undefined }));
+    
+    const res = await fetch("/api/formData", {
+      method: "POST",
+      body: formData as any,
+    });
+    const data = await res.json();
   }
 
   return (
@@ -99,7 +106,7 @@ export default function Home() {
         <Accordion stepNo={step}></Accordion>
       </section>
       <section>
-        <form className="w-full max-w-xl min-h-[400px] bg-gray-60 shadow-lg p-6 rounded-3xl bg-white min-w-[500px] s">
+        <form className="w-full max-w-xl min-h-[400px] bg-gray-60 shadow-lg p-6 rounded-3xl bg-white md:min-w-[500px]" onSubmit={handleSubmit}>
           <CurrentStep formData={formData} setFormData={setFormData} formErrors={formErrors} />
           <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
         </form>

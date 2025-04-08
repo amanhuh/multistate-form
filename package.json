@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tabler/icons-react": "^3.31.0",
+    "cloudinary": "^2.6.0",
     "clsx": "^2.1.1",
     "motion": "^12.6.3",
     "next": "15.2.4",

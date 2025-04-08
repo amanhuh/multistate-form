@@ -85,6 +85,11 @@ export default function Home() {
     setStep((prev) => Math.max(prev - 1, 0));
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+  }
+
   return (
     <div className="flex-center flex-col [&>*]:w-full mt-15">
       <section className="py-[30px]">

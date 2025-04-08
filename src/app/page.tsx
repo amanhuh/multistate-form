@@ -19,10 +19,8 @@ export interface FormData {
   class: string;
   div: string;
   rollNo: string;
-
-  address: string;
-  city: string;
-  zip: string;
+  
+  image?: File;
 }
 
 export default function Home() {
@@ -40,14 +38,12 @@ export default function Home() {
     class: '',
     div: '',
     rollNo: '',
-    address: '',
-    city: '',
-    zip: '',
+    image: undefined,
   });
 
   const [formErrors, setFormErrors] = React.useState<ErrorState>({});
 
-  const validateStep = (step: number): Partial<FormData> => {
+  const validateStep = (step: number): Partial<Record<keyof FormData, string>> => {
     const errors: ErrorState = {};
 
     if (step === 0) {
@@ -66,9 +62,9 @@ export default function Home() {
     }
 
     if (step === 2) {
-      if (!formData.address.trim()) errors.address = "Address is required";
-      if (!formData.city.trim()) errors.city = "City is required";
-      if (!/^\d{5,6}$/.test(formData.zip.trim())) errors.zip = "Zip must be 5 or 6 digits";
+      if (!formData.image) {
+        errors.image = "Please upload an image";
+      }
     }
 
     return errors;
@@ -100,7 +96,7 @@ export default function Home() {
         <Accordion stepNo={step}></Accordion>
       </section>
       <section>
-        <form className="bg-gray-60 shadow-lg p-4 rounded-3xl bg-white min-w-3xs min-h-[25vh]">
+        <form className="w-full max-w-xl min-h-[400px] bg-gray-60 shadow-lg p-4 rounded-3xl bg-white min-w-xl s">
           <CurrentStep formData={formData} setFormData={setFormData} formErrors={formErrors} />
           <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
         </form>

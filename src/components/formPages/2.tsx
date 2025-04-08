@@ -6,7 +6,7 @@ import { FormData } from "@/app/page";
 interface Props {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-  formErrors: Partial<FormData>;
+  formErrors: Partial<Record<keyof FormData, string>>;
 }
 
 export default function Two({ formData, setFormData, formErrors }: Props) {
@@ -16,7 +16,7 @@ export default function Two({ formData, setFormData, formErrors }: Props) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <p className="text-2xl font-bold mb-5">Education Details</p>
 
       {/* College Name */}

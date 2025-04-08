@@ -32,7 +32,7 @@ export default function Home() {
         <Accordion stepNo={step}></Accordion>
       </section>
       <section>
-        <form className="bg-gray-60 shadow-lg p-4 rounded-3xl bg-white min-w-3xs min-h-[25vh]">
+        <form className="bg-gray-60 shadow-lg p-6 rounded-3xl bg-white min-w-3xs min-h-[25vh]">
           <CurrentStep />
           <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
         </form>

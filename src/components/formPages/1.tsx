@@ -3,9 +3,10 @@
 import React from "react";
 import { useState } from "react";
 
-export default function One() {
-  const handleChange = () => {
-    
+export default function One({ setFormData, formData }: any) {
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
   return (
@@ -14,7 +15,7 @@ export default function One() {
       <div className="flex flex-col md:flex-row gap-4">
       <div className="flex flex-col">
         <label htmlFor="fname" className="text-sm font-semibold mb-2">First Name</label>
-        <input name="fname" className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! rounded-lg px-3 py-1.5" placeholder="First Name" onChange={handleChange}></input>
+        <input name="fname" className="border-2 border-gray-300 bg-gray-100 focus-visible:bg-white focus-visible:border-blue-700! focus-visible:outline-blue-700 rounded-lg px-3 py-1.5" placeholder="First Name" onChange={handleChange}></input>
       </div>
       <div className="flex flex-col">
         <label htmlFor="lname" className="text-sm font-semibold mb-2">Last Name</label>

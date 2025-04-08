@@ -19,51 +19,41 @@ export interface FormData {
   course: string;
   class: string;
   div: string;
-  rollNo: string;  
+  rollNo: string;
   image?: File;
 }
+
+export type PartialFormData = Partial<FormData> & { email: string };
 
 export default function Home() {
   type ErrorState = Partial<Record<keyof FormData, string>>;
 
   const defaultFormData: FormData = {
-    firstname: '',
-    lastname: '',
-    email: '',
-    phone: '',
-    clgName: '',
-    course: '',
-    class: '',
-    div: '',
-    rollNo: '',
+    firstname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    clgName: "",
+    course: "",
+    class: "",
+    div: "",
+    rollNo: "",
     image: undefined,
   };
 
   const [formData, setFormData] = React.useState<FormData>(defaultFormData);
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem("formData");
-      if (saved) {
-        setFormData(JSON.parse(saved));
-      }
-    }
-  }, []);
-
   const [step, setStep] = React.useState<number>(0);
+  const [formErrors, setFormErrors] = React.useState<ErrorState>({});
+  const CurrentStep = stepArray[step];
 
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem("step");
-      if (saved) {
-        setStep(parseInt(saved));
-      }
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("formData");
+      const savedStep = localStorage.getItem("step");
+      if (saved) setFormData(JSON.parse(saved));
+      if (savedStep) setStep(parseInt(savedStep));
     }
   }, []);
-
-  const [formErrors, setFormErrors] = React.useState<ErrorState>({});
-
-  const CurrentStep = stepArray[step];
 
   React.useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
@@ -73,7 +63,7 @@ export default function Home() {
     localStorage.setItem("step", step.toString());
   }, [step]);
 
-  const validateStep = (step: number): Partial<Record<keyof FormData, string>> => {
+  const validateStep = (step: number): ErrorState => {
     const errors: ErrorState = {};
 
     if (step === 0) {
@@ -92,19 +82,48 @@ export default function Home() {
     }
 
     if (step === 2) {
-      if (!formData.image) {
-        errors.image = "Please upload an image";
-      }
+      if (!formData.image) errors.image = "Please upload an image";
     }
 
     return errors;
   };
 
-  const nextStep = () => {
+  const patchStepData = async () => {
+    const partial: PartialFormData = { email: formData.email };
+    const formDataToSend = new FormData();
+
+    if (step === 0) {
+      partial.firstname = formData.firstname;
+      partial.lastname = formData.lastname;
+      partial.phone = formData.phone;
+    } else if (step === 1) {
+      partial.clgName = formData.clgName;
+      partial.course = formData.course;
+      partial.class = formData.class;
+      partial.div = formData.div;
+      partial.rollNo = formData.rollNo;
+    } else if (step === 2 && formData.image) {  
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("image", formData.image);
+    }
+
+    await fetch("/api/formData", {
+      method: "PATCH",
+      body: formDataToSend,
+    });
+
+  };
+
+  const nextStep = async () => {
     const errors = validateStep(step);
     setFormErrors(errors);
-  
+
     if (Object.keys(errors).length === 0) {
+      if (step == 0 ) {
+        await postStepData();
+      } else {
+        await patchStepData();
+      }
       setStep((prev) => Math.min(prev + 1, stepLength - 1));
     } else {
       console.log("Validation failed:", errors);
@@ -115,8 +134,7 @@ export default function Home() {
     setStep((prev) => Math.max(prev - 1, 0));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const postStepData = async () => {
     const submitData = new FormData();
     submitData.append("firstname", formData.firstname);
     submitData.append("lastname", formData.lastname);
@@ -135,9 +153,15 @@ export default function Home() {
       method: "POST",
       body: submitData,
     });
+
     const data = await res.json();
-    console.log(data)
+    console.log(data);
   }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await patchStepData();
+  };
 
   return (
     <div className="flex-center flex-col [&>*]:w-full mt-15">
@@ -145,14 +169,14 @@ export default function Home() {
         <div className="flex-center mb-[25px] text-3xl font-bold">
           <h1>Student Details</h1>
         </div>
-        <Accordion stepNo={step}></Accordion>
+        <Accordion stepNo={step} />
       </section>
       <section>
         <form className="w-full max-w-xl min-h-[400px] bg-gray-60 shadow-lg p-6 rounded-3xl bg-white md:min-w-[500px]" onSubmit={handleSubmit}>
           <CurrentStep formData={formData} setFormData={setFormData} formErrors={formErrors} />
-          <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
+          <Buttons step={step} maxStep={stepLength - 1} nextStep={nextStep} prevStep={prevStep} />
         </form>
       </section>
-    </div> 
+    </div>
   );
 }

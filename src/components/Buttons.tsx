@@ -32,7 +32,6 @@ export default function Buttons({
 
   return (
     <div className="w-full mt-6 flex flex-wrap gap-4">
-      {/* First Step: Only Continue */}
       {step === 0 && (
         <button
           type="button"
@@ -44,7 +43,6 @@ export default function Buttons({
         </button>
       )}
 
-      {/* Middle Steps: Back + Continue */}
       {step > 0 && step < maxStep - 1 && (
         <div className="w-full h-max flex flex-row gap-4">
           <button
@@ -65,7 +63,6 @@ export default function Buttons({
         </div>
       )}
 
-      {/* Second Last Step: Back + Review & Submit */}
       {step === maxStep - 1 && step !== 0 && (
         <div className="w-full h-max flex flex-row gap-4">
           <button
@@ -86,7 +83,6 @@ export default function Buttons({
         </div>
       )}
 
-      {/* Last Step: Submit only */}
       {step === maxStep && (
         <div className="w-full h-max flex flex-row gap-4">
           <button

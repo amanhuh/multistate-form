@@ -25,10 +25,8 @@ export interface FormData {
 
 export default function Home() {
   type ErrorState = Partial<Record<keyof FormData, string>>;
-  const [step, setStep] = React.useState<number>(0);
-  const CurrentStep = stepArray[step];
 
-  const [formData, setFormData] = React.useState<FormData>({
+  const defaultFormData: FormData = {
     firstname: '',
     lastname: '',
     email: '',
@@ -39,9 +37,41 @@ export default function Home() {
     div: '',
     rollNo: '',
     image: undefined,
-  });
+  };
+
+  const [formData, setFormData] = React.useState<FormData>(defaultFormData);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem("formData");
+      if (saved) {
+        setFormData(JSON.parse(saved));
+      }
+    }
+  }, []);
+
+  const [step, setStep] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem("step");
+      if (saved) {
+        setStep(parseInt(saved));
+      }
+    }
+  }, []);
 
   const [formErrors, setFormErrors] = React.useState<ErrorState>({});
+
+  const CurrentStep = stepArray[step];
+
+  React.useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }, [formData]);
+
+  React.useEffect(() => {
+    localStorage.setItem("step", step.toString());
+  }, [step]);
 
   const validateStep = (step: number): Partial<Record<keyof FormData, string>> => {
     const errors: ErrorState = {};

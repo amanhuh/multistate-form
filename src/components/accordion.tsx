@@ -1,6 +1,6 @@
 
 export default function Accordion(props: { stepNo?: number }) {
-    var steps = 3;
+    var steps = 5;
     return (
         <div className="w-full flex items-center justify-between px-4 relative">
             {/* Line connecting circles */}

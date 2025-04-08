@@ -115,10 +115,34 @@ export default function Home() {
     setStep((prev) => Math.max(prev - 1, 0));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  }
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    try {
+      const form = new FormData();
+      for (const key in formData) {
+        form.append(key, formData[key as keyof typeof formData] as any);
+      }
+  
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        body: form,
+      });
+  
+      console.log("Status:", res.status); // ✅ Add this
+  
+      const result = await res.json(); // 🔥 This might throw if the body is empty or invalid JSON
+      console.log("Result:", result);
+  
+      if (!res.ok || !result.success) {
+        throw new Error("Submission failed");
+      }
+  
+      // Success handling here...
+    } catch (err) {
+      console.error("Submit error", err);
+      alert("Something went wrong.");
+    }
+  };  
 
   return (
     <div className="flex-center flex-col [&>*]:w-full mt-15">
@@ -131,7 +155,7 @@ export default function Home() {
       <section>
         <form className="w-full max-w-xl min-h-[400px] bg-gray-60 shadow-lg p-6 rounded-3xl bg-white min-w-[500px] s">
           <CurrentStep formData={formData} setFormData={setFormData} formErrors={formErrors} />
-          <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
+          <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} handleSubmit={handleSubmit} />
         </form>
       </section>
     </div> 

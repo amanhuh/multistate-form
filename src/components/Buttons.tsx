@@ -5,11 +5,13 @@ export default function Buttons({
   maxStep,
   nextStep,
   prevStep,
+  handleSubmit
 }: {
   step: number;
   maxStep: number;
   nextStep: () => void;
   prevStep: () => void;
+  handleSubmit: () => void;
 }) {
   const nextButtonRef = useRef<HTMLButtonElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
@@ -99,6 +101,7 @@ export default function Buttons({
           <button
             type="submit"
             ref={submitButtonRef}
+            onClick={handleSubmit}
             className="w-1/2 bg-green-700 text-white py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
           >
             Submit

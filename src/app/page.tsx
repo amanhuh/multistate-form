@@ -131,14 +131,12 @@ export default function Home() {
       submitData.append("image", formData.image);
     }
 
-    console.log("Submitting form data:", formData);
-    //setFormData((prev) => ({ ...prev, image: undefined }));
-
     const res = await fetch("/api/formData", {
       method: "POST",
       body: submitData,
     });
     const data = await res.json();
+    console.log(data)
   }
 
   return (

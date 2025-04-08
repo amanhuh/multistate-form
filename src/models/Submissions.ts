@@ -23,28 +23,26 @@ const formDataSchema = new mongoose.Schema({
     required: true
   },
   clgName: {
-    type: String,
-    required: true
+    type: String
   },
   course: {
-    type: String,
-    required: true
+    type: String
   },
   class: {
-    type: String,
-    required: true
+    type: String
   },
   div: {
-    type: String,
-    required: true
+    type: String
   },
   rollNo: {
-    type: String,
-    required: true
+    type: String
   },
   profileImage: {
-    type: String,
-    required: true
+    type: String
+  },
+  isSubmitted: {
+    type: Boolean,
+    default: false
   }
 });
 

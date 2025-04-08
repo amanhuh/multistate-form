@@ -7,7 +7,6 @@ import { Submissions } from '@/models/Submissions';
 
 export async function POST(request: NextRequest) {
   try {
-
     await connectToDB();
     cloudinary.config({ 
       cloud_name: process.env.cloudName, 
@@ -30,6 +29,18 @@ export async function POST(request: NextRequest) {
       image: formData.get("image") as File,
     };
 
+    const subm = await Submissions.findOne({ email: data.email });
+    if (subm) {
+      return NextResponse.json(
+        { 
+          message: 'Email already exists',
+          error: 'Email already exists',
+        },
+        { status: 400 }
+      );
+    }
+    console.log('Submission:', subm);
+    
     const bytes = data.image?.arrayBuffer();
     const buffer = Buffer.from(await bytes!);
     const base64Image = `data:${data.image?.type};base64,${buffer.toString("base64")}`;
@@ -42,7 +53,11 @@ export async function POST(request: NextRequest) {
         public_id: uuid,
         resource_type: 'auto'
     })
-
+      .catch((error) => {
+        console.error('Error uploading image:', error);
+        throw new Error('Image upload failed');
+      });
+    
     const submission = new Submissions({
       userId: uuid,
       firstName: data.firstname,
@@ -57,8 +72,7 @@ export async function POST(request: NextRequest) {
       profileImage: uploadResult.secure_url
     }).save();
 
-    const subm = await Submissions.findOne({ firstName: 'dada' });
-    console.log('Submission:', subm);
+    
     return NextResponse.json(
       { 
         message: 'Form data received successfully',

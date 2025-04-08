@@ -7,7 +7,7 @@ export default function Accordion(props: { stepNo?: number }) {
             <div className="absolute top-1/2 left-[35px] right-[35px] h-[1px] bg-blue-700 z-0" />
 
             {/* Steps */}
-            {Array.from({ length: steps }, (_, index) => (
+            {Array.from({ length: steps+1 }, (_, index) => (
                 <div
                     key={index}
                     className="z-10 flex items-center justify-center aspect-square w-[50px] m-[7px] border border-blue-700 rounded-full bg-white"

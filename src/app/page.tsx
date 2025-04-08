@@ -8,15 +8,83 @@ import Buttons from "@/components/Buttons";
 
 const stepArray = Object.values(Steps);
 const stepLength = stepArray.length;
+export interface FormData {
+  firstname: string;
+  lastname: string;
+  email: string;
+  phone: string;
+
+  clgName: string;
+  course: string;
+  class: string;
+  div: string;
+  rollNo: string;
+
+  address: string;
+  city: string;
+  zip: string;
+}
 
 export default function Home() {
+  type ErrorState = Partial<Record<keyof FormData, string>>;
   const [step, setStep] = React.useState<number>(0);
   const CurrentStep = stepArray[step];
-  const [formData, setFormData] = React.useState({});
-  const [formErrors, setFormErrors] = React.useState([{}]);
+
+  const [formData, setFormData] = React.useState<FormData>({
+    firstname: '',
+    lastname: '',
+    email: '',
+    phone: '',
+    clgName: '',
+    course: '',
+    class: '',
+    div: '',
+    rollNo: '',
+    address: '',
+    city: '',
+    zip: '',
+  });
+
+  const [formErrors, setFormErrors] = React.useState<ErrorState>({});
+
+  const validateStep = (step: number): Partial<FormData> => {
+    const errors: ErrorState = {};
+
+    if (step === 0) {
+      if (!formData.firstname.trim()) errors.firstname = "First name is required";
+      if (!formData.lastname.trim()) errors.lastname = "Last name is required";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errors.email = "Invalid email format";
+      if (!/^\d{10}$/.test(formData.phone)) errors.phone = "Phone number must be 10 digits";
+    }
+
+    if (step === 1) {
+      if (!formData.clgName.trim()) errors.clgName = "College name is required";
+      if (!formData.course.trim()) errors.course = "Course is required";
+      if (!/^[A-Za-z0-9]+$/.test(formData.class.trim())) errors.class = "Class should be alphanumeric";
+      if (!/^[A-Z]$/.test(formData.div.trim())) errors.div = "Div should be a single uppercase letter";
+      if (!/^\d{1,3}$/.test(formData.rollNo.trim())) errors.rollNo = "Roll No should be 1–3 digit number";
+    }
+
+    if (step === 2) {
+      if (!formData.address.trim()) errors.address = "Address is required";
+      if (!formData.city.trim()) errors.city = "City is required";
+      if (!/^\d{5,6}$/.test(formData.zip.trim())) errors.zip = "Zip must be 5 or 6 digits";
+    }
+
+    return errors;
+  };
 
   const nextStep = () => {
-    setStep((prev) => Math.min(prev + 1, stepLength - 1));
+    const errors = validateStep(step); // custom validation function
+    setFormErrors(errors);
+  
+    if (Object.keys(errors).length === 0) {
+      // No validation errors, proceed to next step
+      setStep((prev) => Math.min(prev + 1, stepLength - 1));
+    } else {
+      // Stay on the current step and show errors
+      console.log("Validation failed:", errors);
+    }
   };
 
   const prevStep = () => {
@@ -33,7 +101,7 @@ export default function Home() {
       </section>
       <section>
         <form className="bg-gray-60 shadow-lg p-6 rounded-3xl bg-white min-w-3xs min-h-[25vh]">
-          <CurrentStep />
+          <CurrentStep formData={formData} setFormData={setFormData} formErrors={formErrors} />
           <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
         </form>
       </section>

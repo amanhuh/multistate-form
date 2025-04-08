@@ -1,7 +1,10 @@
-import { profile } from 'console';
-import mongoose from 'mongoose';
+import mongoose, { Schema, models, model } from 'mongoose';
 
 const formDataSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true
+  },
   firstName: {
     type: String,
     required: true
@@ -44,3 +47,5 @@ const formDataSchema = new mongoose.Schema({
     required: true
   }
 });
+
+export const Submissions = models.FormSubmission || model("FormSubmission", formDataSchema);

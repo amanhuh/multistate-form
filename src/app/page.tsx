@@ -8,27 +8,25 @@ import Buttons from "@/components/Buttons";
 
 const stepArray = Object.values(Steps);
 const stepLength = stepArray.length;
+
 export interface FormData {
+  userId?: string;
   firstname: string;
   lastname: string;
   email: string;
   phone: string;
-
   clgName: string;
   course: string;
   class: string;
   div: string;
-  rollNo: string;
-  
+  rollNo: string;  
   image?: File;
 }
 
 export default function Home() {
   type ErrorState = Partial<Record<keyof FormData, string>>;
-  const [step, setStep] = React.useState<number>(0);
-  const CurrentStep = stepArray[step];
 
-  const [formData, setFormData] = React.useState<FormData>({
+  const defaultFormData: FormData = {
     firstname: '',
     lastname: '',
     email: '',
@@ -39,9 +37,41 @@ export default function Home() {
     div: '',
     rollNo: '',
     image: undefined,
-  });
+  };
+
+  const [formData, setFormData] = React.useState<FormData>(defaultFormData);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem("formData");
+      if (saved) {
+        setFormData(JSON.parse(saved));
+      }
+    }
+  }, []);
+
+  const [step, setStep] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem("step");
+      if (saved) {
+        setStep(parseInt(saved));
+      }
+    }
+  }, []);
 
   const [formErrors, setFormErrors] = React.useState<ErrorState>({});
+
+  const CurrentStep = stepArray[step];
+
+  React.useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }, [formData]);
+
+  React.useEffect(() => {
+    localStorage.setItem("step", step.toString());
+  }, [step]);
 
   const validateStep = (step: number): Partial<Record<keyof FormData, string>> => {
     const errors: ErrorState = {};
@@ -87,12 +117,26 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const submitData = new FormData();
+    submitData.append("firstname", formData.firstname);
+    submitData.append("lastname", formData.lastname);
+    submitData.append("email", formData.email);
+    submitData.append("phone", formData.phone);
+    submitData.append("clgName", formData.clgName);
+    submitData.append("course", formData.course);
+    submitData.append("class", formData.class);
+    submitData.append("div", formData.div);
+    submitData.append("rollNo", formData.rollNo);
+    if (formData.image) {
+      submitData.append("image", formData.image);
+    }
+
     console.log("Submitting form data:", formData);
     //setFormData((prev) => ({ ...prev, image: undefined }));
-    
+
     const res = await fetch("/api/formData", {
       method: "POST",
-      body: formData as any,
+      body: submitData,
     });
     const data = await res.json();
   }

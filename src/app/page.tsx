@@ -94,7 +94,7 @@ export default function Home() {
         <Accordion stepNo={step}></Accordion>
       </section>
       <section>
-        <form className="w-full max-w-xl min-h-[400px] bg-gray-60 shadow-lg p-6 rounded-3xl bg-white min-w-xl s">
+        <form className="w-full max-w-xl min-h-[400px] bg-gray-60 shadow-lg p-6 rounded-3xl bg-white min-w-[500px] s">
           <CurrentStep formData={formData} setFormData={setFormData} formErrors={formErrors} />
           <Buttons step={step} maxStep={stepLength-1} nextStep={nextStep} prevStep={prevStep} />
         </form>

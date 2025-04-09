@@ -11,6 +11,8 @@ const SubmissionSchema = new Schema({
   div: { type: String },
   rollNo: { type: String },
   image: { type: String },
+  step: { type: Number },
+  isSubmitted: { type: Boolean },
 }, { timestamps: true });
 
 const Submission = models.Submission || model("Submission", SubmissionSchema);

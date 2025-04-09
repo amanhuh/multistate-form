@@ -5,24 +5,30 @@ export default function Buttons({
   maxStep,
   nextStep,
   prevStep,
+  validateStep,
   handleSubmit
 }: {
   step: number;
   maxStep: number;
   nextStep: () => boolean | void;
   prevStep: () => void;
-  handleSubmit: (e?: React.FormEvent, step?: number, submit?: boolean) => void;
+  validateStep: (step: number) => boolean;
+  handleSubmit: (e?: React.FormEvent, step?: number, submit?: boolean) => Promise<boolean>;
 }) {
   const nextButtonRef = useRef<HTMLButtonElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  const handleContinue = (submit: boolean = false) => {
-    const advanced = nextStep(); // returns true if moved to next step
-    if (advanced !== false) {
-      handleSubmit(undefined, step, submit);
+  const handleContinue = async (submit: boolean = false) => {
+    let validate = validateStep(step),
+    success;
+    if (validate) {
+      success = await handleSubmit(undefined, step, submit);
     }
-  };
-
+    if (validate && success) {
+      nextStep()
+    }
+  };  
+  
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {

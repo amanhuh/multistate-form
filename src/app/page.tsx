@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 
 const stepArray = Object.values(Steps);
@@ -73,8 +74,7 @@ export default function Home() {
   
           if (res.ok && result.data && result.data.email === email) {
             setFormData(result.data);
-            console.log("result datastep")
-            console.log(result.data.step+1)
+            toast.success("Data loaded succesfully!");
             if (result.data.step !== undefined && result.data.step !== null) {
               setStep(result.data.step);
             }
@@ -234,14 +234,17 @@ export default function Home() {
         if (!res.ok) {
           const text = await res.text();
           console.error("❌ Server returned error:", text);
+          toast.error("❌ Server returned error");
           throw new Error("Submit failed");
         }
   
         const result = await res.json();
         localStorage.setItem("details", JSON.stringify({ email: formData.email, _id: result.data._id }));
+        toast.success("Data saved successfully");
   
         if (submit) {
           localStorage.removeItem("details");
+          toast.success("🎉 Submission successful!");
           setSubmitted(true);
         }
   

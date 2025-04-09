@@ -47,7 +47,6 @@ export default function Buttons({
 
   return (
     <div className="w-full mt-6 flex flex-wrap gap-4">
-      {/* First Step */}
       {step === 0 && (
         <button
           type="button"
@@ -59,12 +58,14 @@ export default function Buttons({
         </button>
       )}
 
-      {/* Middle Steps */}
       {step > 0 && step < maxStep - 1 && (
         <div className="w-full h-max flex flex-row gap-4">
           <button
             type="button"
-            onClick={prevStep}
+            onClick={async () => {
+              const success = await handleSubmit(undefined, step - 1, false);
+              if (success) prevStep();
+            }}
             className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
           >
             Back
@@ -80,12 +81,14 @@ export default function Buttons({
         </div>
       )}
 
-      {/* Review & Submit */}
       {step === maxStep - 1 && (
         <div className="w-full h-max flex flex-row gap-4">
           <button
             type="button"
-            onClick={prevStep}
+            onClick={async () => {
+              const success = await handleSubmit(undefined, step - 1, false);
+              if (success) prevStep();
+            }}
             className="w-1/2 bg-gray-300 text-gray-900 py-2 px-4 rounded-xl cursor-pointer hover:opacity-85"
           >
             Back
@@ -101,7 +104,6 @@ export default function Buttons({
         </div>
       )}
 
-      {/* Final Submit */}
       {step === maxStep && (
         <div className="w-full h-max flex flex-row gap-4">
           <button

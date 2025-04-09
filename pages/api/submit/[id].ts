@@ -39,9 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     uploadDir,
     keepExtensions: true,
     multiples: false,
-    filter: part => {
-      return part.name !== null && part.originalFilename === undefined;
-    },
+    filter: () => true,
   });
 
   try {

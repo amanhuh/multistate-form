@@ -4,8 +4,16 @@ import React from "react";
 import Accordion from "@/components/accordion";
 import * as Steps from "@/components/formPages";
 import Buttons from "@/components/Buttons";
-import { tr } from "motion/react-client";
 import ThankYou from "@/components/ThankYou";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button";
+
 
 const stepArray = Object.values(Steps);
 const stepLength = stepArray.length;
@@ -49,6 +57,8 @@ export default function Home() {
   const [formErrors, setFormErrors] = React.useState<ErrorState>({});
   const CurrentStep = stepArray[step];
   const [submitted, setSubmitted] = React.useState(false);
+  const [alreadySubmittedOpen, setAlreadySubmittedOpen] = React.useState(false);
+
 
   React.useEffect(() => {
     const loadSavedDetails = async () => {
@@ -63,8 +73,10 @@ export default function Home() {
   
           if (res.ok && result.data && result.data.email === email) {
             setFormData(result.data);
-            if (result.data.step) {
-              setStep(Number(result.data.step)+1);
+            console.log("result datastep")
+            console.log(result.data.step+1)
+            if (result.data.step !== undefined && result.data.step !== null) {
+              setStep(result.data.step);
             }
           } else {
             console.warn("No valid saved data found");
@@ -144,44 +156,76 @@ export default function Home() {
         if (value !== undefined && value !== null) {
           form.set(key, value as any); 
         }
+        if (formData.image instanceof File) {
+          form.append("image", formData.image);
+        }
       }
       if (step !== undefined) form.append("step", step.toString());
       if (submit) form.append("isSubmitted", "true");
-  
+
       if (typeof window !== "undefined") {
         const data = localStorage.getItem("details");
-        let savedDetails = data ? JSON.parse(data) : null;
-  
-        const check = await fetch(`/api/submit/check?email=${encodeURIComponent(formData.email)}`);
-        const rawText = await check.text();
-  
-        if (!check.ok) {
-          console.error("❌ Server returned error (raw text):", rawText);
-          throw new Error("Server error");
+        const savedDetails = data ? JSON.parse(data) : null;
+
+        let rawText;
+
+        const checkSubmit = await fetch(`/api/submit/check?email=${encodeURIComponent(formData.email)}&submit=true`);
+        rawText = await checkSubmit.text();
+
+        if (!checkSubmit.ok) {
+          console.error("❌ Server returned error (submit check):", rawText);
+          throw new Error("Server error on submission check");
         }
-  
-        let checkResult;
+
+        let submitResult;
         try {
-          checkResult = JSON.parse(rawText);
-          console.log(checkResult);
-          if (checkResult?.alreadySubmitted) {
-            alert("This email has already submitted the form. You cannot submit again.");
-            setFormData(defaultFormData);
+          submitResult = JSON.parse(rawText);
+          if (submitResult?.alreadySubmitted) {
+            setAlreadySubmittedOpen(true); 
+            setFormData(defaultFormData); 
             return false;
           }
         } catch (err) {
-          console.error("❌ JSON parse failed:", rawText);
-          throw new Error("Invalid JSON response");
+          console.error("❌ JSON parse failed (submit check):", rawText);
+          throw new Error("Invalid JSON response for submit check");
         }
-  
+
+        const checkExists = await fetch(`/api/submit/check?email=${encodeURIComponent(formData.email)}&submit=false`);
+        rawText = await checkExists.text();
+
+        if (!checkExists.ok) {
+          console.error("❌ Server returned error (existence check):", rawText);
+          throw new Error("Server error on existence check");
+        }
+
+        let existsResult;
+        let existingId = null;
+        try {
+          existsResult = JSON.parse(rawText);
+          console.log(existsResult)
+          existingId = existsResult?.data?._id || null;
+          existsResult = existsResult?.exists
+        } catch (err) {
+          console.error("❌ JSON parse failed (existence check):", rawText);
+          throw new Error("Invalid JSON response for existence check");
+        }
+
         let res;
-        if (!savedDetails || savedDetails.email !== formData.email) {
+        if (!existingId) {
+          console.log("post")
           res = await fetch("/api/submit", {
             method: "POST",
             body: form,
           });
         } else {
-          res = await fetch(`/api/submit/${savedDetails._id}`, {
+          console.log("patch")
+          const idToPatch = existingId;
+          if (!idToPatch) {
+            console.error("❌ Could not determine ID to patch.");
+            throw new Error("Missing ID for patch");
+          }
+
+          res = await fetch(`/api/submit/${idToPatch}`, {
             method: "PATCH",
             body: form,
           });
@@ -194,14 +238,11 @@ export default function Home() {
         }
   
         const result = await res.json();
-        if (!savedDetails) {
-          localStorage.setItem("details", JSON.stringify({ email: formData.email, _id: result.data._id }));
-        }
+        localStorage.setItem("details", JSON.stringify({ email: formData.email, _id: result.data._id }));
   
         if (submit) {
           localStorage.removeItem("details");
           setSubmitted(true);
-
         }
   
         return true;
@@ -228,6 +269,20 @@ export default function Home() {
           <Accordion stepNo={step} />
         </section>
         <section>
+        <Dialog open={alreadySubmittedOpen} onOpenChange={setAlreadySubmittedOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Form Already Submitted</DialogTitle>
+              <DialogDescription>
+                This email has already submitted the form. You cannot submit again.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex justify-end">
+              <Button onClick={() => setAlreadySubmittedOpen(false)}>OK</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
           <form className="w-full max-w-xl min-h-[400px] bg-gray-60 shadow-lg p-6 rounded-3xl bg-white min-w-[500px]">
             <CurrentStep
               formData={formData}
